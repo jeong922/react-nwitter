@@ -2,6 +2,9 @@ import { GithubAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { auth } from '../firebase';
+import { useState } from 'react';
+import { Error } from './auth-components';
+import { FirebaseError } from 'firebase/app';
 
 const Button = styled.span`
   margin-top: 50px;
@@ -25,19 +28,25 @@ const Logo = styled.img`
 
 export default function GithubBtn() {
   const navigate = useNavigate();
+  const [error, setError] = useState('');
   const onClick = async () => {
     try {
       const provider = new GithubAuthProvider();
       await signInWithPopup(auth, provider);
       navigate('/');
     } catch (error) {
-      console.error(error);
+      if (error instanceof FirebaseError) {
+        setError(error.message);
+      }
     }
   };
   return (
-    <Button onClick={onClick}>
-      <Logo src='/github-logo.svg' />
-      Continue with Github
-    </Button>
+    <>
+      <Button onClick={onClick}>
+        <Logo src='/github-logo.svg' />
+        Continue with Github
+      </Button>
+      {error !== '' ? <Error>{error}</Error> : null}
+    </>
   );
 }
