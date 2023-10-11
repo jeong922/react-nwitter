@@ -72,7 +72,7 @@ export default function PostTweetForm() {
     const { files } = e.target;
     if (files) {
       if (files[0].size > 1024 * 1024) {
-        alert('File size is too big');
+        alert('File size is too big. Please choose less than 1MB');
       }
       setFile(files[0]);
     }
@@ -95,10 +95,7 @@ export default function PostTweetForm() {
       });
 
       if (file) {
-        const locationRef = ref(
-          storage,
-          `tweets/${user.uid}-${user.displayName}/${doc.id}`
-        );
+        const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
         const result = await uploadBytes(locationRef, file);
         const url = await getDownloadURL(result.ref);
         await updateDoc(doc, {
