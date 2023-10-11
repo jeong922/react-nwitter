@@ -70,7 +70,12 @@ export default function PostTweetForm() {
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
-    setFile(files && files[0]);
+    if (files) {
+      if (files[0].size > 1024 * 1024) {
+        alert('File size is too big');
+      }
+      setFile(files[0]);
+    }
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
