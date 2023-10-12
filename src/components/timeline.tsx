@@ -24,7 +24,9 @@ const Wrapper = styled.div`
   display: flex;
   gap: 10px;
   flex-direction: column;
+  overflow-y: scroll;
 `;
+
 export default function Timeline() {
   const [tweets, setTweet] = useState<Tweet[]>([]);
 
